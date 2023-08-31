@@ -1,6 +1,6 @@
 // import { useState } from "react"
 // import React from "react";
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import axios from "axios";
 
 const App = () => {
@@ -8,6 +8,12 @@ const App = () => {
   const [location, setLocation] = useState("");
   const [previousWeather, setPreviousWeather] = useState([]);
   const [error, setError] = useState('');
+  // useEffect(()=>{
+  //   if (data) {
+  //     setData((puranadata)=>{[...puranadata,data]})
+      
+  //   }
+  // })
 
   const API_KEY = "b7b670bd4fa6712f27e052b420479cf1";
   const BASE_URL = "https://api.openweathermap.org/data/2.5";
