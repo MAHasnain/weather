@@ -1,38 +1,36 @@
 // import { useState } from "react"
 // import React from "react";
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import axios from "axios";
 
 const App = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const [location, setLocation] = useState("");
-  const [previousWeather, setPreviousWeather] = useState([]);
-  const [error, setError] = useState('');
-  // useEffect(()=>{
-  //   if (data) {
-  //     setData((puranadata)=>{[...puranadata,data]})
-      
-  //   }
-  // })
-
+  // const [previousWeather, setPreviousWeather] = useState([]);
+  const [error, setError] = useState("");
+  useEffect(() => {});
+  console.log(data);
   const API_KEY = "b7b670bd4fa6712f27e052b420479cf1";
   const BASE_URL = "https://api.openweathermap.org/data/2.5";
   const url = `${BASE_URL}/weather?q=${location}&units=metric&appid=${API_KEY}`;
 
   const searchLocation = (event) => {
     if (event.key === "Enter") {
-      axios.get(url).then((response) => {
-        setData(response.data);
-        setPreviousWeather([ ...previousWeather, data]);
-        setError("")
-      })
-      .catch( err => {
-        if (err.response.status == 404) {
-          setError("Invalid city Name")
-        }else{
-          setError("")
-        }
-        console.error(err) })
+      axios
+        .get(url)
+        .then((response) => {
+          setData((previous) => [...previous, response.data]);
+          // setPreviousWeather([ ...previousWeather, data]);
+          setError("");
+        })
+        .catch((err) => {
+          if (err.response.status == 404) {
+            setError("Invalid city Name");
+          } else {
+            setError("");
+          }
+          console.error(err);
+        });
       setLocation("");
     }
   };
@@ -53,11 +51,12 @@ const App = () => {
         </div>
       </div>
       <div className="error">
-        <p>
-          {error}
-        </p>
+        <p>{error}</p>
       </div>
-      {data.name != undefined && (
+      {data.map((item, key) => {
+        console.log("item", item);
+        console.log("key", key);
+
         <div className="container">
           <div className="top">
             <div className="location">
@@ -89,8 +88,8 @@ const App = () => {
               <p>Wind Speed</p>
             </div>
           </div>
-        </div>
-      )}
+        </div>;
+      })}
     </div>
   );
 };
